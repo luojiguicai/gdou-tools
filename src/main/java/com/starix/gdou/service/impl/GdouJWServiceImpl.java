@@ -2,10 +2,10 @@ package com.starix.gdou.service.impl;
 
 import com.starix.gdou.entity.Student;
 import com.starix.gdou.exception.CustomException;
-import com.starix.gdou.pojo.LoginResult;
+import com.starix.gdou.dto.LoginResult;
 import com.starix.gdou.repository.StudentRepository;
 import com.starix.gdou.response.CommonResult;
-import com.starix.gdou.service.SpiderService;
+import com.starix.gdou.service.GdouJWService;
 import com.starix.gdou.vo.ExamVO;
 import com.starix.gdou.vo.ScoreVO;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +40,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Tobu
+ * 旧版教务系统服务service实现类
+ * @author Starix
  * @date 2019-11-20 20:05
  */
 @Service
 @Slf4j
-public class GdouJWServiceImpl implements SpiderService {
+public class GdouJWServiceImpl implements GdouJWService {
 
     //python脚本绝对路径
     @Value("${python.path}")
@@ -358,7 +359,7 @@ public class GdouJWServiceImpl implements SpiderService {
         if (student == null){
             throw new CustomException(CommonResult.failed("未绑定学号"));
         }
-        return login(student.getXh(), student.getPassword());
+        return login(student.getUsername(), student.getPassword());
     }
 
 
