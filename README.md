@@ -22,7 +22,7 @@
 ### 预览：
 <div align="center">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/score.jpg" alt="image" width="300px">
-<img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/evaluation.jpg" alt="image" width="300px">
+<img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/evaluation-v2.jpg" alt="image" width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/score-list.jpg" alt="image" width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/exam-list.jpg" alt=" image"width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/cpdaily-auto-sign-in.jpg" alt=" image"width="300px">
