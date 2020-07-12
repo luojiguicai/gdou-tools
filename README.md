@@ -19,7 +19,7 @@
 + 自动抢课（已停止维护，不再使用）
 + 今日校园自动签到（已下线）
 
-### 预览：
+### 部分预览：
 <div align="center">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/score.jpg" alt="image" width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/evaluation-v2.jpg" alt="image" width="300px">
