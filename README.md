@@ -5,7 +5,7 @@
 
 ### 主要技术栈：
 + 前端：JQuery、HTML、CSS、VUE
-+ 后台：SpringBoot、JPA
++ 后台：SpringBoot、SpringMVC、JPA
 + 数据库：MySQL
 + Java爬虫：Jsoup、HttpClient
 + Python爬虫：requests、BeautifulSoup
