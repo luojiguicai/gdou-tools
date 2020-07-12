@@ -15,7 +15,7 @@
 + 成绩查询
 + 考试查询
 + 学号绑定
-+ 一键评价
++ 一键评价（V2.0完全使用Python实现：<a href="https://github.com/Starix610/gdou-tools-evaluate" target="_blank">独立项目地址</a>）
 + 自动抢课（已停止维护，不再使用）
 + 今日校园自动签到（已下线）
 
