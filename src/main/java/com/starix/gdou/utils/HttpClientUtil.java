@@ -100,7 +100,7 @@ public class HttpClientUtil {
     }
 
     public String doPost(String url, String json) throws IOException {
-        HttpPost httpPost = new HttpPost(url);
+        HttpPost httpPost = new HttpPost(url);123
         httpPost.setHeader("User-Agent", USER_AGENT);
         httpPost.addHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         // json类型post参数
