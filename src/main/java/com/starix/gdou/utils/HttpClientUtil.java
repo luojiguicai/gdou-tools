@@ -133,7 +133,7 @@ public class HttpClientUtil {
             httpPost.setHeader(headerParam.getKey(), headerParam.getValue());
         }
         // json类型post参数
-        StringEntity entity = new StringEntity(json);
+        StringEntity entity = new StringEntity(json, Consts.UTF_8);
         httpPost.setEntity(entity);
         return executeRequest(httpPost);
     }
