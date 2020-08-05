@@ -4,18 +4,18 @@ import com.starix.gdou.entity.Student;
 import com.starix.gdou.exception.CustomException;
 import com.starix.gdou.repository.StudentRepository;
 import com.starix.gdou.response.CommonResult;
-import com.starix.gdou.service.SchoolInfoQueryService;
+import com.starix.gdou.service.UserBindService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 /**
- * @author Tobu
+ * @author Starix
  * @date 2019-11-23 16:43
  */
 @Service
-public class UserBindServiceImpl implements SchoolInfoQueryService {
+public class UserBindServiceImpl implements UserBindService {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -35,9 +35,19 @@ public class UserBindServiceImpl implements SchoolInfoQueryService {
         }
         Student student = new Student();
         student.setOpenid(openid);
-        student.setXh(xh);
+        student.setUsername(xh);
         student.setPassword(password);
+        student.setNotifyStatus(0);
         student.setCreateTime(new Date());
         studentRepository.save(student);
+    }
+
+    @Override
+    public String queryUsernameByOpenid(String openid) {
+        Student student = studentRepository.findByOpenid(openid);
+        if (student != null){
+            return student.getUsername();
+        }
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 package com.starix.gdou.service;
 
-import com.starix.gdou.pojo.LoginResult;
+import com.starix.gdou.dto.LoginResult;
 import com.starix.gdou.vo.ExamVO;
 import com.starix.gdou.vo.ScoreVO;
 
@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @author Tobu
+ * 教务系统服务service
+ * v1版本
+ * @author Starix
  * @date 2019-11-20 20:05
  */
-public interface SpiderService {
+public interface GdouJWService {
 
 
     /**
@@ -40,7 +42,7 @@ public interface SpiderService {
      * @param semester
      * @return
      */
-    List<ExamVO> getExam(LoginResult loginResult, String year, String semester) throws IOException, Exception;
+    List<ExamVO> getExam(LoginResult loginResult, String year, String semester) throws Exception;
 
     /**
      * 获得查成绩页面年份下拉列表数据

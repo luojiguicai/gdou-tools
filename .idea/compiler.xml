@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="gdou-tools" />
         <module name="gdou-jw-tools" />
+        <module name="gdou-tools" />
       </profile>
     </annotationProcessing>
   </component>
