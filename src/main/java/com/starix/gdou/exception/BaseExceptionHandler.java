@@ -28,7 +28,7 @@ public class BaseExceptionHandler {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handlerAny(Exception e){
-        logger.error("系统内部异常:[{}]",e.getMessage(), e);
+        logger.error("系统内部异常:[{}]", e.getMessage(), e);
         return CommonResult.failed(ResultCode.SERVER_ERROR,"服务器似乎遇到了一些问题，请稍后重试");
     }
 

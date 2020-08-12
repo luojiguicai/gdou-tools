@@ -2,6 +2,9 @@ package com.starix.gdou.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
+import org.apache.http.cookie.Cookie;
+
+import java.util.List;
 
 /**
  * @author shiwenjie
@@ -11,7 +14,7 @@ import lombok.Data;
 @Builder
 public class ExamQueryRquestDTO {
 
-    private String cookie;
+    private List<Cookie> cookies;
 
     private String year;
 

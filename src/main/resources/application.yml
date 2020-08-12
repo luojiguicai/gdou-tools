@@ -61,7 +61,5 @@ server:
 
 gdou:
 #  jw-url: http://210.38.137.77:8016
-  webvpn-url: https://webvpn.gdou.edu.cn
-  webvpn-username: xxxx
-  webvpn-password: xxxx
-  jw-url: https://webvpn.gdou.edu.cn/http/77726476706e69737468656265737421a2a611d2746826012d5fc7f4cc
+#  webvpn-url: https://webvpn.gdou.edu.cn
+  jw-url: https://jw.gdou.edu.cn

@@ -6,6 +6,7 @@ import com.starix.gdou.dto.request.ScoreQueryRquestDTO;
 import com.starix.gdou.dto.response.ExamQueryResponseDTO;
 import com.starix.gdou.dto.response.ScoreQueryResponseDTO;
 import com.starix.gdou.dto.response.YearOptionListResponseDTO;
+import org.apache.http.cookie.Cookie;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,15 +53,15 @@ public interface GdouJWServiceV2 {
 
     /**
      * 获得查成绩页面年份下拉列表数据
-     * @param cookie
+     * @param cookies
      * @return
      */
-    YearOptionListResponseDTO getSocreYearOptionList(String cookie) throws Exception;
+    YearOptionListResponseDTO getSocreYearOptionList(List<Cookie> cookies) throws Exception;
 
     /**
      * 获得查考试页面年份下拉列表数据
      * @return
      */
-    List<String> getExamYearOptionList(String cookie) throws Exception;
+    List<String> getExamYearOptionList(List<Cookie> cookies) throws Exception;
 
 }

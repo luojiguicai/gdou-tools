@@ -40,7 +40,7 @@ public class HttpClientUtil {
 
     private CookieStore cookieStore = new BasicCookieStore();
 
-    // 为了隔离每个请求的httpClient实例，使彼此之间互不干扰，这里不采用static
+    // 为了隔离每个请求线程的httpClient实例，使彼此之间互不干扰，这里不采用static而是作为实例变量
     private HttpClient httpClient = createHttpClient();
 
 
@@ -136,6 +136,11 @@ public class HttpClientUtil {
         StringEntity entity = new StringEntity(json);
         httpPost.setEntity(entity);
         return executeRequest(httpPost);
+    }
+
+
+    public CookieStore getCookieStore(){
+        return this.cookieStore;
     }
 
     public String getCookie(String name) {

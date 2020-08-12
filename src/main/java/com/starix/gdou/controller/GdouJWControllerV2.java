@@ -67,7 +67,7 @@ public class GdouJWControllerV2 {
         }
         log.info("[{}]查询成绩, 学年: {}, 学期: {}", loginResult.getUsername(), year, semester);
         ScoreQueryRquestDTO scoreQueryRquestDTO = ScoreQueryRquestDTO.builder()
-                .cookie(loginResult.getCookie())
+                .cookies(loginResult.getCookies())
                 .year(year)
                 .semester(semester)
                 .build();
@@ -84,7 +84,7 @@ public class GdouJWControllerV2 {
         }
         log.info("[{}]查询考试, 学年: {}, 学期: {}", loginResult.getUsername(), year, semester);
         ExamQueryRquestDTO examQueryRquestDTO = ExamQueryRquestDTO.builder()
-                .cookie(loginResult.getCookie())
+                .cookies(loginResult.getCookies())
                 .year(year)
                 .semester(semester)
                 .build();
@@ -102,7 +102,7 @@ public class GdouJWControllerV2 {
        if (loginResult == null){
            return CommonResult.failed(ResultCode.UNAUTHORIZED,"你还没有登录或者登录信息已经过期");
        }
-        YearOptionListResponseDTO yearOptionListResponseDTO = gdouJWService.getSocreYearOptionList(loginResult.getCookie());
+        YearOptionListResponseDTO yearOptionListResponseDTO = gdouJWService.getSocreYearOptionList(loginResult.getCookies());
         return CommonResult.success(yearOptionListResponseDTO);
     }
 
@@ -114,7 +114,7 @@ public class GdouJWControllerV2 {
         if (loginResult == null){
             return CommonResult.failed(ResultCode.UNAUTHORIZED,"你还没有登录或者登录信息已经过期");
         }
-        List<String> yearOptionsList = gdouJWService.getExamYearOptionList(loginResult.getCookie());
+        List<String> yearOptionsList = gdouJWService.getExamYearOptionList(loginResult.getCookies());
         return CommonResult.success(yearOptionsList);
     }
 

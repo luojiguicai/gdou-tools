@@ -17,6 +17,7 @@ import com.starix.gdou.service.GdouJWServiceV2;
 import com.starix.gdou.utils.HttpClientUtil;
 import com.starix.gdou.utils.RSAUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -39,17 +40,9 @@ import java.util.Map;
 @Slf4j
 public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
 
-    //教务系统地址
-    @Value("${gdou.webvpn-url}")
-    private String WEBVPN_URL;
+    // 教务系统地址
     @Value("${gdou.jw-url}")
     private String JW_URL;
-    @Value("${gdou.webvpn-username}")
-    private String WEBVPN_USERNAME;
-    @Value("${gdou.webvpn-password}")
-    private String WEBVPN_PASSWORD;
-
-    private static final String COOKIE_NAME = "wengine_vpn_ticketwebvpn_gdou_edu_cn";
 
     @Autowired
     private StudentRepository studentRepository;
@@ -59,16 +52,13 @@ public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
     public LoginResultV2 login(String username, String password) throws Exception {
         // 一次完整流程中的所有请求都需要使用同一个httpclient实例，保持cookie同步
         HttpClientUtil httpClient = new HttpClientUtil();
-        // webvpn登录
-        webvpnLogin(httpClient);
-        // 教务系统登录
         jwLogin(httpClient, username, password);
-        String cookie = httpClient.getCookie(COOKIE_NAME);
-        return new LoginResultV2(cookie, username);
+        List<Cookie> cookies = httpClient.getCookieStore().getCookies();
+        return new LoginResultV2(cookies, username);
     }
 
     /**
-     * 教务系统登录
+     * 执行教务系统登录
      */
     private void jwLogin(HttpClientUtil httpClient, String useranme, String password) throws Exception{
         // 获取publickey，用于密码rsa加密
@@ -100,44 +90,6 @@ public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
         log.info("[{}]教务系统登录成功", useranme);
     }
 
-
-    /**
-     * webvpn登录
-     * 获取cookie（HttpClient会自己维护cookie）
-     */
-    private void webvpnLogin(HttpClientUtil httpClient) throws Exception {
-        Map<String, String> params = new HashMap<>();
-        params.put("auth_type", "local");
-        params.put("username", WEBVPN_USERNAME);
-        params.put("sms_code", "");
-        params.put("password", WEBVPN_PASSWORD);
-        params.put("needCaptcha", "false");
-        String resultStr = httpClient.doPost(WEBVPN_URL + "/do-login?local_login=true", params);
-        JSONObject json = JSON.parseObject(resultStr);
-        if (!json.getBoolean("success")){
-            if ("NEED_CONFIRM".equals(json.getString("error"))){
-                // 当前需要确认登录
-                webvpnConfirmLogin(httpClient);
-            } else {
-                log.error("内置webvpn异常：{}", resultStr);
-                throw new CustomException(CommonResult.failed("内置webvpn异常，等待修复"));
-            }
-        }
-    }
-
-    /**
-     * 执行确认登录，踢掉已登录的webvpn客户端
-     * @param httpClient
-     */
-    private void webvpnConfirmLogin(HttpClientUtil httpClient) throws IOException {
-        String resultStr = httpClient.doPost(WEBVPN_URL + "/do-confirm-login", new HashMap<>());
-        JSONObject json = JSON.parseObject(resultStr);
-        if (!json.getBoolean("success")){
-            throw new CustomException(CommonResult.failed("内置webvpn异常，等待修复"));
-        }
-        log.info("踢掉已登录的webvpn客户端");
-    }
-
     @Override
     public LoginResultV2 loginByOpenid(String openid) throws Exception {
         Student student = studentRepository.findByOpenid(openid);
@@ -151,7 +103,7 @@ public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
     @Override
     public List<ScoreQueryResponseDTO> queryScore(ScoreQueryRquestDTO scoreQueryRquestDTO) throws IOException {
         HttpClientUtil httpClient = new HttpClientUtil();
-        addCookie(httpClient, scoreQueryRquestDTO.getCookie());
+        addCookie(httpClient, scoreQueryRquestDTO.getCookies());
         Map<String, String> data = new HashMap<>();
         data.put("xnm", scoreQueryRquestDTO.getYear());
         data.put("xqm", scoreQueryRquestDTO.getSemester());
@@ -184,16 +136,16 @@ public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
     }
 
     @Override
-    public YearOptionListResponseDTO getSocreYearOptionList(String cookie) throws Exception {
+    public YearOptionListResponseDTO getSocreYearOptionList(List<Cookie> cookies) throws Exception {
         HttpClientUtil httpClient = new HttpClientUtil();
-        addCookie(httpClient, cookie);
+        addCookie(httpClient, cookies);
         String resultStr = httpClient.doGet(JW_URL + "/cjcx/cjcx_cxDgXscj.html?gnmkdm=N305005");
         Document document = Jsoup.parse(resultStr);
         return buildYearOptionListResponseDTO(document);
     }
 
     @Override
-    public List<String> getExamYearOptionList(String cookie) throws Exception {
+    public List<String> getExamYearOptionList(List<Cookie> cookies) throws Exception {
         return null;
     }
 
@@ -234,11 +186,8 @@ public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
         return responseDTO;
     }
 
-    private void addCookie(HttpClientUtil httpClient, String cookie){
-        Map<String, String> cookieSettings = new HashMap<>();
-        cookieSettings.put("domain", WEBVPN_URL.replaceFirst("https://",""));
-        cookieSettings.put("path", "/");
-        httpClient.addCookie(COOKIE_NAME, cookie, cookieSettings);
+    private void addCookie(HttpClientUtil httpClient, List<Cookie> cookies){
+        cookies.forEach(cookie -> httpClient.getCookieStore().addCookie(cookie));
     }
 
     private List<ScoreQueryResponseDTO> buildScoreQueryResponseDTOList(JSONObject json){

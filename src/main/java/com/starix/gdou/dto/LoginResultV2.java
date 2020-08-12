@@ -4,6 +4,9 @@ package com.starix.gdou.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.http.cookie.Cookie;
+
+import java.util.List;
 
 /**
  * v2版本：
@@ -16,7 +19,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginResultV2 {
 
-    private String cookie;
+    private List<Cookie> cookies;
 
     private String username;
 

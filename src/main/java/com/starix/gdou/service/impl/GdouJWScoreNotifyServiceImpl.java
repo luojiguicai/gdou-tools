@@ -43,9 +43,9 @@ public class GdouJWScoreNotifyServiceImpl implements GdouJWScoreNotifyService{
             throw new CustomException(CommonResult.failed("你已经开启过成绩通知了"));
         }
         LoginResultV2 loginResult = gdouJWService.login(student.getUsername(), student.getPassword());
-        YearOptionListResponseDTO yearOptionList = gdouJWService.getSocreYearOptionList(loginResult.getCookie());
+        YearOptionListResponseDTO yearOptionList = gdouJWService.getSocreYearOptionList(loginResult.getCookies());
         ScoreQueryRquestDTO scoreQueryRquestDTO = ScoreQueryRquestDTO.builder()
-                .cookie(loginResult.getCookie())
+                .cookies(loginResult.getCookies())
                 .year(yearOptionList.getYearValueList().get(yearOptionList.getSelectedYear()))
                 .semester(yearOptionList.getSemesterValueList().get(yearOptionList.getSelectedSemester()))
                 .build();

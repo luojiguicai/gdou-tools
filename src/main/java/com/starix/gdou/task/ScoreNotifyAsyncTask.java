@@ -18,18 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
 /**
+ * 2020.08.07 关闭成绩更新检测
  * @author Starix
  * @date 2020-07-18 12:13
  */
 @Slf4j
-@Component
+//@Component
 public class ScoreNotifyAsyncTask {
 
     @Autowired
@@ -46,9 +46,9 @@ public class ScoreNotifyAsyncTask {
         List<Student> studentList = studentRepository.findAllByNotifyStatus(1);
         for (Student student : studentList) {
             LoginResultV2 loginResult = gdouJWService.login(student.getUsername(), student.getPassword());
-            YearOptionListResponseDTO yearOptionList = gdouJWService.getSocreYearOptionList(loginResult.getCookie());
+            YearOptionListResponseDTO yearOptionList = gdouJWService.getSocreYearOptionList(loginResult.getCookies());
             ScoreQueryRquestDTO scoreQueryRquestDTO = ScoreQueryRquestDTO.builder()
-                    .cookie(loginResult.getCookie())
+                    .cookies(loginResult.getCookies())
                     .year(yearOptionList.getYearValueList().get(yearOptionList.getSelectedYear()))
                     .semester(yearOptionList.getSemesterValueList().get(yearOptionList.getSelectedSemester()))
                     .build();
