@@ -11,12 +11,15 @@ import com.starix.gdou.repository.StudentRepository;
 import com.starix.gdou.response.CommonResult;
 import com.starix.gdou.service.GdouJWScoreNotifyService;
 import com.starix.gdou.service.GdouJWServiceV2;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * @author Starix
@@ -58,7 +61,10 @@ public class GdouJWScoreNotifyServiceImpl implements GdouJWScoreNotifyService{
         student.setEmail(email);
         student.setNotifyStatus(1);
         studentRepository.save(student);
-        log.info("[{}]开启成绩更新通知成功", student.getUsername());
+        log.info("开启成绩更新通知成功, openid: {}, email: {}, username: {}", openid, email, student.getUsername());
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG,
+                String.format("开启成绩更新通知成功, openid: %s, email: %s, username: %s",
+                        openid, email, student.getUsername()));
     }
 
     @Override

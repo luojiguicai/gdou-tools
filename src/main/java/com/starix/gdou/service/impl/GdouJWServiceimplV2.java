@@ -16,6 +16,7 @@ import com.starix.gdou.response.CommonResult;
 import com.starix.gdou.service.GdouJWServiceV2;
 import com.starix.gdou.utils.HttpClientUtil;
 import com.starix.gdou.utils.RSAUtil;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * 适配新版教务系统的service实现类
@@ -145,6 +148,7 @@ public class GdouJWServiceimplV2 implements GdouJWServiceV2 {
             throw new CustomException(CommonResult.failed("未绑定学号"));
         }
         log.info("[{}]已绑定用户自动登录", student.getUsername());
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, String.format("[%s]已绑定用户自动登录", student.getUsername()));
         return login(student.getUsername(), student.getPassword());
     }
 

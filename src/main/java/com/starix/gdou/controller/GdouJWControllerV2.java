@@ -9,6 +9,7 @@ import com.starix.gdou.dto.response.YearOptionListResponseDTO;
 import com.starix.gdou.response.CommonResult;
 import com.starix.gdou.response.ResultCode;
 import com.starix.gdou.service.GdouJWServiceV2;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * v1版本controller
@@ -33,7 +36,7 @@ public class GdouJWControllerV2 {
 
     @GetMapping("/test")
     public CommonResult test() throws Exception {
-        return CommonResult.success();
+        throw new RuntimeException("测试异常");
     }
 
     @PostMapping("/login")
@@ -42,6 +45,7 @@ public class GdouJWControllerV2 {
             return CommonResult.failed(ResultCode.VALIDATE_FAILED);
         }
         log.info("[{}]用户登录", username);
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, String.format("[%s]用户登录", username));
         LoginResultV2 loginResult = gdouJWService.login(username, password);
         httpSession.setAttribute("jw_cookie", loginResult);
         return CommonResult.success();
@@ -66,6 +70,8 @@ public class GdouJWControllerV2 {
             return CommonResult.failed(ResultCode.UNAUTHORIZED,"你还没有登录或者登录信息已经过期");
         }
         log.info("[{}]查询成绩, 学年: {}, 学期: {}", loginResult.getUsername(), year, semester);
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG,
+                String.format("[%s]查询成绩, 学年: %s, 学期: %s", loginResult.getUsername(), year, semester));
         ScoreQueryRquestDTO scoreQueryRquestDTO = ScoreQueryRquestDTO.builder()
                 .cookie(loginResult.getCookie())
                 .year(year)
@@ -83,6 +89,8 @@ public class GdouJWControllerV2 {
             return CommonResult.failed(ResultCode.UNAUTHORIZED,"你还没有登录或者登录信息已经过期");
         }
         log.info("[{}]查询考试, 学年: {}, 学期: {}", loginResult.getUsername(), year, semester);
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG,
+                String.format("[%s]查询考试, 学年: %s, 学期: %s", loginResult.getUsername(), year, semester));
         ExamQueryRquestDTO examQueryRquestDTO = ExamQueryRquestDTO.builder()
                 .cookie(loginResult.getCookie())
                 .year(year)

@@ -1,9 +1,12 @@
 package com.starix.gdou.task;
 
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * @author Starix
@@ -20,6 +23,7 @@ public class ScoreNotifySchedule {
     @Scheduled(cron = "0 0 8,20 * * ?")
     public void signIntask() throws Exception {
         log.info("==============开始执行成绩更新检测任务==============");
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, "开始执行成绩更新检测任务");
         scoreNotifyAsyncTask.checkScoreUpdateAndNotify();
     }
 

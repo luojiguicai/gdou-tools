@@ -104,7 +104,7 @@ public class HttpClientUtil {
         httpPost.setHeader("User-Agent", USER_AGENT);
         httpPost.addHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         // json类型post参数
-        StringEntity entity = new StringEntity(json);
+        StringEntity entity = new StringEntity(json, Consts.UTF_8);
         httpPost.setEntity(entity);
         return executeRequest(httpPost);
     }

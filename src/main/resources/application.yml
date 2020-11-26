@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    schema: classpath:db/schema-h2.sql
     #    data: classpath:db/data-h2.sql
-    url: jdbc:mysql://www.starix.top:3306/weixin_mp?characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://xxxx:3306/weixin_mp?characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: xxxx
     druid:
@@ -20,7 +20,7 @@ spring:
   # Redis
   redis:
     database: 0
-    host: www.starix.top
+    host: xxxx
     #    host: 127.0.0.1
     port: 6379
     password: xxxx
@@ -55,7 +55,7 @@ server:
     httpPort: 9801
   ssl:
     key-store: classpath:3262598_starix.top.pfx
-    key-store-password: Pr1ifVXd
+    key-store-password: xxxx
     key-store-type: PKCS12
 
 

@@ -12,6 +12,7 @@ import com.starix.gdou.repository.StudentRepository;
 import com.starix.gdou.service.GdouJWServiceV2;
 import com.starix.gdou.utils.HtmlMailRenderUtil;
 import com.starix.gdou.utils.MailUtil;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_EXCEPTION;
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * @author Starix
@@ -69,6 +73,7 @@ public class ScoreNotifyAsyncTask {
                 sendNotifyEmail(student.getUsername(), student.getEmail(), emailData);
             }else {
                 log.info("[{}]成绩未更新", student.getUsername());
+                WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, String.format("[%s]成绩未更新", student.getUsername()));
             }
         }
         return new AsyncResult<>("任务执行完毕");
@@ -82,6 +87,7 @@ public class ScoreNotifyAsyncTask {
             BeanUtils.copyProperties(currentScoreDTO, scoreNotifyDTO);
             if (!oldScoreDTOList.contains(currentScoreDTO)){
                 log.info("[{}]成绩更新-{}", username, currentScoreDTO.getCourseName());
+                WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, String.format("[%s]成绩更新-%s", username, currentScoreDTO.getCourseName()));
                 scoreNotifyDTO.setNew(true);
             }
             scoreNotifyDTOList.add(scoreNotifyDTO);
@@ -96,8 +102,10 @@ public class ScoreNotifyAsyncTask {
         try {
             mailUtil.sendHtmlMail(email, "成绩更新通知", html);
             log.info("[{}]发送通知邮件给{}成功", username, email);
+            WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, String.format("[%s]发送通知邮件给%s成功", username, email));
         } catch (Exception e) {
             log.error("[{}]发送通知邮件给{}失败", username, email, e);
+            WxMessagePushUtil.push(WX_PUSH_TOKEN_EXCEPTION, String.format("[%s]发送通知邮件给%s失败：%s", username, email, e.toString()));
         }
     }
 }
