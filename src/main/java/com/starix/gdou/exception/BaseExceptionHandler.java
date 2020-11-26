@@ -2,6 +2,7 @@ package com.starix.gdou.exception;
 
 import com.starix.gdou.response.CommonResult;
 import com.starix.gdou.response.ResultCode;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_EXCEPTION;
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
+
 
 @ControllerAdvice
 public class BaseExceptionHandler {
@@ -28,7 +32,8 @@ public class BaseExceptionHandler {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult handlerAny(Exception e){
-        logger.error("系统内部异常:[{}]", e.getMessage(), e);
+        logger.error("系统内部异常：[{}]", e.getMessage(), e);
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_EXCEPTION, String.format("系统内部异常：%s", e.toString()));
         return CommonResult.failed(ResultCode.SERVER_ERROR,"服务器似乎遇到了一些问题，请稍后重试");
     }
 
@@ -38,7 +43,9 @@ public class BaseExceptionHandler {
     public CommonResult handlerCustomException(Exception e){
         CustomException customException = (CustomException) e;
         CommonResult result = customException.getCommonResult();
-        logger.error("业务异常:[code:{},msg:{}]", result.getCode(), result.getMessage());
+        logger.error("业务异常：[code:{}，msg:{}]", result.getCode(), result.getMessage());
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG,
+                String.format("出现业务异常：code：%s，msg：%s", result.getCode(), result.getMessage()));
         return result;
     }
 

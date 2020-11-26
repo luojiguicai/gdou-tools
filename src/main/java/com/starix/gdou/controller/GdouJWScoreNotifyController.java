@@ -3,6 +3,7 @@ package com.starix.gdou.controller;
 import com.starix.gdou.response.CommonResult;
 import com.starix.gdou.response.ResultCode;
 import com.starix.gdou.service.GdouJWScoreNotifyService;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * @author Starix
@@ -27,10 +30,13 @@ public class GdouJWScoreNotifyController {
     @PostMapping("/enableNotify")
     public CommonResult enableNotify(String openid, String email) throws Exception {
         log.info("开启成绩更新通知, openid: {}, email: {}", openid, email);
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG,
+                String.format("开启成绩更新通知, openid: %s, email: %s", openid, email));
         if (StringUtils.isEmpty(email)){
             return CommonResult.failed(ResultCode.VALIDATE_FAILED);
         }
         if (StringUtils.isEmpty(openid)){
+            WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, "开启成绩通知页面未获取到关注用户信息");
             return CommonResult.failed("未获取到关注用户的信息，请从公众号内进入该页面再进行操作！");
         }
         gdouJWScoreNotifyService.enableNotify(openid, email);

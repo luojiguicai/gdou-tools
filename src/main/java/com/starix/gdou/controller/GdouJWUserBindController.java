@@ -6,6 +6,7 @@ import com.starix.gdou.response.CommonResult;
 import com.starix.gdou.response.ResultCode;
 import com.starix.gdou.service.GdouJWServiceV2;
 import com.starix.gdou.service.UserBindService;
+import com.starix.gdou.utils.WxMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.starix.gdou.common.Constant.WX_PUSH_TOKEN_MAIN_LOG;
 
 /**
  * @author shiwenjie03
@@ -35,9 +38,11 @@ public class GdouJWUserBindController {
             return CommonResult.failed(ResultCode.VALIDATE_FAILED);
         }
         if (StringUtils.isEmpty(openid)){
+            WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, "绑定学号页面未获取到关注用户信息");
             return CommonResult.failed("未获取到关注用户的信息，请从公众号内进入该页面再进行绑定！");
         }
         log.info("[{}]绑定学号", username);
+        WxMessagePushUtil.push(WX_PUSH_TOKEN_MAIN_LOG, String.format("[%s]绑定学号", username));
         // 绑定前先验证账号密码是否正确
         gdouJWService.login(username, password);
         userBindService.bind(openid, username, password);
