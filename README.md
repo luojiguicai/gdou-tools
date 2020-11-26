@@ -1,4 +1,4 @@
-# GDOU校园助手V2.0
+## GDOU校园助手V2.0
 
 ### 介绍
 一个提供GDOU校园内网站便捷小功能的项目，功能大多都是基于Python和Java写的爬虫实现的。
@@ -19,10 +19,10 @@
 + 自动抢课（已停止维护，不再使用）
 + 今日校园自动签到（已下线）
 
-### 预览：
+### 部分预览：
 <div align="center">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/score.jpg" alt="image" width="300px">
-<img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/evaluation.jpg" alt="image" width="300px">
+<img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/evaluation-v2.jpg" alt="image" width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/score-list.jpg" alt="image" width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/exam-list.jpg" alt=" image"width="300px">
 <img src="https://swj-bucke.oss-cn-shenzhen.aliyuncs.com/github-images/gdou-tools/cpdaily-auto-sign-in.jpg" alt=" image"width="300px">
